@@ -1,5 +1,6 @@
 import asyncio
 import websockets
+import datetime  # Import datetime module to get the current time
 
 # create an empty list to store clients
 clients = []
@@ -8,6 +9,12 @@ clients = []
 async def handle_message(websocket, path):
     global clients
     global fastest_time
+    client_address = websocket.remote_address
+    address , port = client_address[0],client_address[1]
+    arrival_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Get the current time
+    print(f"Received message from client at address {address}:{port} at time {arrival_time}")
+
+    
     message = await websocket.recv()
     if message == "buzz":
         response_time = asyncio.get_event_loop().time()
